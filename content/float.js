@@ -6,17 +6,18 @@ var sideInterval = window.setInterval(function(){
     });
 }, 2000);
 
-$('img').mousemove(function(e){
+var getColor = function(e){
     var x=e.pageX;
     var y=e.pageY;
+    console.log('get x: ',x,' y: ',y);
     chrome.runtime.sendMessage({action:'getCursor', x:x,y:y}, function(response){
         colorCode = response.color;
         removeFloatBox();
         drawFloatBox(colorCode,response.color,'cursor',x,y);
-    });   
-});
+    }); 
+};  
 
-$('img').click(function(e){
+var addColor = function(e){
     var x=e.pageX;
     var y=e.pageY;
     chrome.runtime.sendMessage({action:'getCursor', x:x,y:y}, function(response){
@@ -29,7 +30,13 @@ $('img').click(function(e){
         });
         drawFloatBox(colorCode+' is added to Color Lib',response.color,'side',-1,-1);
     });
-});
+};
+
+$('img').addClass('picker');
+
+$('img.picker').bind('mousemove',getColor);
+
+$('img.picker').click(addColor);
 
 function drawFloatBox(msg,color,type,x,y){
     var newDiv = document.createElement("div");
@@ -60,5 +67,6 @@ function removeFloatBox(){
         $(this).remove();
     });
 };
+
 
 
