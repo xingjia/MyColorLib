@@ -1,7 +1,13 @@
 drawFloatBox('Image Loaded', '#ff0000','side', -1, -1);
 
+$('img').addClass('picker');
+
+$('img.picker').bind('mousemove',getColor);
+
+$('img.picker').click(addColor);
+
 var sideInterval = window.setInterval(function(){
-    $('div.side:first').fadeOut("slow",function(){
+    $('div.side:first').fadeOut('slow',function(){
         $(this).remove();
     });
 }, 2000);
@@ -9,7 +15,6 @@ var sideInterval = window.setInterval(function(){
 var getColor = function(e){
     var x=e.pageX;
     var y=e.pageY;
-    console.log('get x: ',x,' y: ',y);
     chrome.runtime.sendMessage({action:'getCursor', x:x,y:y}, function(response){
         colorCode = response.color;
         removeFloatBox();
@@ -31,12 +36,6 @@ var addColor = function(e){
         drawFloatBox(colorCode+' is added to Color Lib',response.color,'side',-1,-1);
     });
 };
-
-$('img').addClass('picker');
-
-$('img.picker').bind('mousemove',getColor);
-
-$('img.picker').click(addColor);
 
 function drawFloatBox(msg,color,type,x,y){
     var newDiv = document.createElement("div");
