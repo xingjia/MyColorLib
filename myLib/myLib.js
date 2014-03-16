@@ -18,4 +18,11 @@ $(document).ready(function(){
 			listItem.show('slow');				
 		}
 	});
+
+	$('button.clear').click(function(){
+		background.clearColorLib(function(response){
+			console.log('Library cleared!');
+			$('.favList').remove();
+		});
+	});
 }); 

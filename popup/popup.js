@@ -8,7 +8,7 @@ $(document).ready(function() {
             $('#my-checkbox').bootstrapSwitch('state',!response);
         });
     }else{
-         $('#my-checkbox').bootstrapSwitch();
+         $('#my-checkbox').bootstrapSwitch('state',!response);
     }
 
     $("#my-checkbox").click();

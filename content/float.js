@@ -1,41 +1,42 @@
 drawFloatBox('Image Loaded', '#ff0000','side', -1, -1);
 
-$('img').addClass('picker');
+$('canvas').addClass('picker');
 
-$('img.picker').bind('mousemove',getColor);
+var hex;
 
-$('img.picker').click(addColor);
+var getColor = function(e){
+    console.log('move!');
+    var x=e.pageX;
+    var y=e.pageY;
+    var context = document.getElementsByTagName('canvas')[0].getContext('2d');
+    var pixel = context.getImageData(x, y, 1, 1).data;
+    hex = "#" + ("000000" + rgbToHex(pixel[0], pixel[1], pixel[2])).slice(-6);
+    removeFloatBox();
+    drawFloatBox(hex, hex,'cursor', x+5, y+5);
+};  
+
+var addColor = function(e){
+    console.log('click!');
+    var x=e.pageX;
+    var y=e.pageY;
+    chrome.runtime.sendMessage({action:'storeColor',color:hex},function(response){
+        if(response.result === true)
+            drawFloatBox(hex + ' is added to Color Lib',hex,'side',-1,-1);
+        else
+            drawFloatBox('Hmmm for some reason it failed to add this color to Lib..','#ff0000','side',-1,-1);
+    });
+    drawFloatBox(hex + ' is added to Color Lib',hex,'side',-1,-1);
+};
+
+$('canvas.picker').on('mousemove',getColor);
+
+$('canvas').click(addColor);
 
 var sideInterval = window.setInterval(function(){
     $('div.side:first').fadeOut('slow',function(){
         $(this).remove();
     });
 }, 2000);
-
-var getColor = function(e){
-    var x=e.pageX;
-    var y=e.pageY;
-    chrome.runtime.sendMessage({action:'getCursor', x:x,y:y}, function(response){
-        colorCode = response.color;
-        removeFloatBox();
-        drawFloatBox(colorCode,response.color,'cursor',x,y);
-    }); 
-};  
-
-var addColor = function(e){
-    var x=e.pageX;
-    var y=e.pageY;
-    chrome.runtime.sendMessage({action:'getCursor', x:x,y:y}, function(response){
-        colorCode = response.color;
-        chrome.runtime.sendMessage({action:'storeColor',color:colorCode},function(response){
-            if(response.result === true)
-                drawFloatBox(colorCode+' is added to Color Lib',response.color,'side',-1,-1);
-            else
-                drawFloatBox('Hmmm for some reason it failed to add this color to Lib..','#ff0000','side',-1,-1);
-        });
-        drawFloatBox(colorCode+' is added to Color Lib',response.color,'side',-1,-1);
-    });
-};
 
 function drawFloatBox(msg,color,type,x,y){
     var newDiv = document.createElement("div");
@@ -46,9 +47,12 @@ function drawFloatBox(msg,color,type,x,y){
     newDiv.appendChild(msg);
     newDiv.style.backgroundColor = "black";
     newDiv.style.color = "white";
-    newDiv.style.opacity = "0.7";
-    newDiv.style.position = "fixed";
     newDiv.className = type;
+    if(type === "side"){
+        newDiv.style.opacity = "0.7";
+        newDiv.style.position = "fixed";
+    }else
+        newDiv.style.position = "absolute";
     if(x<0 || y<0){
         newDiv.style.right = "20px";
         newDiv.style.bottom = "20px";
@@ -66,6 +70,12 @@ function removeFloatBox(){
         $(this).remove();
     });
 };
+
+function rgbToHex(r, g, b) {
+    if (r > 255 || g > 255 || b > 255)
+        throw "Invalid color component";
+    return ((r << 16) | (g << 8) | b).toString(16);
+}
 
 
 

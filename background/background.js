@@ -69,6 +69,11 @@ function saveColor(color){
 	});
 }
 
+function clearColorLib(callback){
+	chrome.storage.sync.set({'favColors':[]},function(){});
+	callback();
+}
+
 function getLastUsedStates(callback){
 	callback(on);
 }
