@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "My Color Lib",
-  "description": "This extension gets you the color code of anything in your browser.",
+  "description": "This extension gets you the color code of a picture in your browser.",
   "version": "1.0",
 
   "permissions": [
@@ -15,7 +15,7 @@
   ],
 	
   "background":{
-	"page":"background/background.html",
+	"scripts": ["Lib/jquery.js","background/background.js"],
 	"persistent":false
   },
 	

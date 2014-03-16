@@ -2,11 +2,6 @@ var on = false;
 
 $(document).ready(function() {
 
-	var canvas = document.getElementById('myCanvas');
-	var context = canvas.getContext('2d');
-	var imageObj = new Image();
-	imageObj.src = "";
-	imageObj.onload = function(){context.drawImage(imageObj,0,0);};
 	var x = 0
 		, y = 0;
 	var favColors = [];
@@ -43,6 +38,7 @@ $(document).ready(function() {
 		}
   	); 	
 });
+
 
 function rgbToHex(r, g, b) {
 	if (r > 255 || g > 255 || b > 255)

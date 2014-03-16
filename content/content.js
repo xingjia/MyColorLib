@@ -1,9 +1,11 @@
+var image;
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.action == "getContent"){
             var content = document.getElementsByTagName("img")[0];
             var imageObj = new Image();
             imageObj.src = content.src;
+            image = content.src;
             var canvas = document.createElement("canvas");
             document.body.appendChild(canvas);
             var context = canvas.getContext('2d');
@@ -15,6 +17,13 @@ chrome.runtime.onMessage.addListener(
             };
             document.body.removeChild(content);
             sendResponse({image:content.src});
+        }
+        if(request.action === "getState"){
+            if($('canvas.picker').length > 0){
+                console.log('state in content is true!');
+                sendResponse({state:true});
+            }     
+            sendResponse({state:false});
         }
     }
 );
