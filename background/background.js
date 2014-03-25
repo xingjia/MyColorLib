@@ -26,7 +26,9 @@ $(document).ready(function() {
 			}
 			if(request.action == "storeColor"){
 				console.log(request.action);
-				var color = request.color;
+				var now = new Date();
+				var color = {'color':request.color,'date':now};
+				console.log(color);
 				saveColor(color);
 				sendResponse({result:true});
 			}
