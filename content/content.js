@@ -7,6 +7,7 @@ chrome.runtime.onMessage.addListener(
             imageObj.src = content.src;
             image = content.src;
             var canvas = document.createElement("canvas");
+            canvas.classList.add('picker');
             document.body.appendChild(canvas);
             var context = canvas.getContext('2d');
             imageObj.onload = function(){
@@ -22,7 +23,8 @@ chrome.runtime.onMessage.addListener(
             if($('canvas.picker').length > 0){
                 console.log('state in content is true!');
                 sendResponse({state:true});
-            }     
+            }
+            console.log('state in content is false!');
             sendResponse({state:false});
         }
     }

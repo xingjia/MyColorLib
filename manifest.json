@@ -1,14 +1,15 @@
 {
   "manifest_version": 2,
 
-  "name": "My Color Lib",
-  "description": "This extension gets you the color code of a picture in your browser.",
+  "name": "Eye Dropper",
+  "description": "This extension gets you the color code any pixel in a picture in your browser.",
   "version": "1.0",
 
   "permissions": [
 	"tabs",
 	"background",
   "storage",
+  "clipboardWrite",
 	"http://*/*",
   "https://*/*",
 	"file:///*/*"
@@ -16,7 +17,7 @@
 	
   "background":{
 	"scripts": ["Lib/jquery.js","background/background.js"],
-	"persistent":false
+	"persistent":true
   },
 	
   "browser_action": {
