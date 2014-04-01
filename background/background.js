@@ -1,7 +1,6 @@
 var on = false;
-
 $(document).ready(function() {
-
+	console.log('BG first load. On:',on);
 	var x = 0
 		, y = 0;
 	var favColors = [];
@@ -51,7 +50,8 @@ function rgbToHex(r, g, b) {
 function loadColorLib(callback){
 	chrome.storage.sync.get('favColors',function(response){
 		console.log('favColors loaded:', response.favColors);
-		if(!(typeof response.favColors == 'undefined')){
+		if((typeof response.favColors) !== 'undefined'){
+			console.log('sent to popup:', response.favColors);
 			callback(response.favColors);
 		}
 		else{
@@ -62,14 +62,28 @@ function loadColorLib(callback){
 
 function saveColor(color){
 	loadColorLib(function(favColors){
-		favColors.push(color);
+		favColors.unshift(color);
+		if(favColors.length > 10)
+			favColors.splice(10);
 		chrome.storage.sync.set({'favColors': favColors}, function() {});
 	});
 }
 
 function clearColorLib(callback){
 	chrome.storage.sync.set({'favColors':[]},function(){});
-	callback();
+	if(callback)
+		callback();
+}
+
+function removeColor(color, callback){
+	chrome.storage.sync.get('favColors',function(response){
+		var lib = response.favColors;
+		lib.splice(lib.indexOf(color),1);
+		chrome.storage.sync.set({'favColors':lib}, function(response){
+			console.log('Color ', color, ' removed.');
+			callback(lib);
+		});
+	});
 }
 
 function getLastUsedStates(callback){

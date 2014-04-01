@@ -1,8 +1,42 @@
 body{
 	width: 300px;
-	padding:20px;
+	padding: 20px
 }
 
 label{
 	padding-right: 20px;
+}
+
+.colorDiv
+{
+	-webkit-transition:width linear 0.2s;
+	width:10px;
+	height:70px;
+	margin-right:10px;
+	display:inline;
+	float:left;
+}
+
+.open
+{
+	-webkit-transition: width linear 0.2s;
+	width:70px;
+}
+
+.show
+{
+	display:inline;
+}
+
+.favList
+{
+	overflow-x:scroll;
+	overflow-y:hidden;
+	margin-bottom: 20px;
+}
+
+.secondary
+{
+	font-size:10px;
+	color:grey;
 }
